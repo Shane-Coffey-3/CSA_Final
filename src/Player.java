@@ -5,6 +5,9 @@ public class Player {
 
     private int x, y, size;
     private Color color;
+    double verticalVelocity = 0;
+    double timeInAir = 0;
+    double jumpStrength = 20;
 
     public Player(int x, int y, int size, Color color) {
         this.x = x;
@@ -14,6 +17,8 @@ public class Player {
     }
 
     public void draw(Graphics g) {
+        updateHeight();
+
         g.setColor(color);
         g.fillRect(x, y, size, size);
     }
@@ -40,5 +45,32 @@ public class Player {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public void moveLeft() {
+        setX(getX() - 5);
+    }
+
+    public void moveRight() {
+        setX(getX() + 5);
+    }
+
+    public void moveUp() {
+        setY(getY() - 5);
+    }
+
+    public void moveDown() {
+        setY(getY() + 5);
+    }
+
+    public void jump() {
+        timeInAir = 0;
+        verticalVelocity = -jumpStrength;
+    }
+
+    public void updateHeight() {
+        timeInAir += 0.1;
+        verticalVelocity++;
+        y += verticalVelocity;
     }
 }

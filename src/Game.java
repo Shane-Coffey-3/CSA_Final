@@ -16,8 +16,20 @@ public class Game extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 System.out.println(e.getKeyCode());
+                if(e.getKeyCode() == 65) {
+                    playerOne.moveLeft();
+                }
+                if(e.getKeyCode() == 68) {
+                    playerOne.moveRight();
+                }
+                if(e.getKeyCode() == 87) {
+                    playerOne.jump();
+                }
             }
+
+            public void
         });
+
 
         playerOne = new Player(100, 400, 20, Color.BLUE);
         playerTwo = new Player(700, 400, 20, Color.RED);
