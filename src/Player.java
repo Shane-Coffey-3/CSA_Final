@@ -3,21 +3,24 @@ import java.awt.*;
 
 public class Player {
 
-    private int x, y, size;
+    private int x, y, size, speed = 10;
     private Color color;
     double verticalVelocity = 0;
-    double timeInAir = 0;
     double jumpStrength = 20;
+    boolean isMovingLeft, isMovingRight;
 
     public Player(int x, int y, int size, Color color) {
-        this.x = x;
-        this.y = y;
-        this.size = size;
+            this.x = x;
+            this.y = y;
+            this.size = size;
         this.color = color;
     }
 
     public void draw(Graphics g) {
         updateHeight();
+
+        if(isMovingLeft) x -= speed;
+        if(isMovingRight) x += speed;
 
         g.setColor(color);
         g.fillRect(x, y, size, size);
@@ -47,30 +50,20 @@ public class Player {
         this.size = size;
     }
 
-    public void moveLeft() {
-        setX(getX() - 5);
-    }
-
-    public void moveRight() {
-        setX(getX() + 5);
-    }
-
-    public void moveUp() {
-        setY(getY() - 5);
-    }
-
-    public void moveDown() {
-        setY(getY() + 5);
-    }
-
     public void jump() {
-        timeInAir = 0;
         verticalVelocity = -jumpStrength;
     }
 
     public void updateHeight() {
-        timeInAir += 0.1;
         verticalVelocity++;
-        y += verticalVelocity;
+        y += (int) verticalVelocity;
+    }
+
+    public void setIsMovingLeft(boolean isMovingLeft) {
+        this.isMovingLeft = isMovingLeft;
+    }
+
+    public void setIsMovingRight(boolean isMovingRight) {
+        this.isMovingRight = isMovingRight;
     }
 }
