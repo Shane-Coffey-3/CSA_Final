@@ -16,8 +16,8 @@ public class Player {
         this.color = color;
     }
 
-    public void draw(Graphics g) {
-        updateHeight();
+    public void draw(Graphics g, Dimension screenSize) {
+        updateHeight(screenSize.height);
 
         if(isMovingLeft) x -= speed;
         if(isMovingRight) x += speed;
@@ -54,9 +54,13 @@ public class Player {
         verticalVelocity = -jumpStrength;
     }
 
-    public void updateHeight() {
+    public void updateHeight(int screenHeight) {
         verticalVelocity++;
         y += (int) verticalVelocity;
+
+        if(y + size > screenHeight) {
+            y = screenHeight - size;
+        }
     }
 
     public void setIsMovingLeft(boolean isMovingLeft) {

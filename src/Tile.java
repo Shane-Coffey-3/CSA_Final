@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class Tile extends JPanel {
+public abstract class Tile extends JPanel {
 
     public static final int AIR_TILE = 0;
     public static final int GROUND_TILE = 1;
@@ -20,11 +20,7 @@ public class Tile extends JPanel {
         tileSize = newTileSize;
     }
 
-    public int getTileType() {
-        return tileType;
-    }
+    public abstract int getTileType();
 
-    public void draw(Graphics g) {
-
-    }
+    public abstract void draw(Graphics g);
 }

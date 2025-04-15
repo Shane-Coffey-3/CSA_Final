@@ -3,7 +3,9 @@ import java.awt.*;
 
 public class Arena {
 
-    public static final Tile[][] emptyMap = new Tile[20][30];
+    public static final Tile[][] emptyMap = createEmptyMap(20, 30);
+    public static final Tile[][] map1 = createMap1();
+
 
     private Tile[][] map;
 
@@ -25,5 +27,27 @@ public class Arena {
                 tile.draw(g);
             }
         }
+    }
+
+    private static Tile[][] createEmptyMap(int y, int x) {
+        Tile[][] map = new Tile[y][x];
+        for(int i = 0; i < y; i++) {
+            for(int j = 0; j < x; j++) {
+                map[i][j] = new AirTile(i, j);
+            }
+        }
+        return map;
+    }
+
+
+
+    private static Tile[][] createMap1() {
+        Tile[][] map = new Tile[20][30];
+        for(int i = 0; i < y; i++) {
+            for(int j = 0; j < x; j++) {
+                map[i][j] = new AirTile(i, j);
+            }
+        }
+        return map;
     }
 }
