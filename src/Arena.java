@@ -9,8 +9,9 @@ public class Arena {
 
     private Tile[][] map;
 
-    public Arena(Tile[][] map) {
+    public Arena(Tile[][] map, int tileSize) {
         this.map = map;
+        Tile.setTileSize(tileSize);
     }
 
     public Tile[][] getMap() {
@@ -42,12 +43,11 @@ public class Arena {
 
 
     private static Tile[][] createMap1() {
-        Tile[][] map = new Tile[20][30];
-        for(int i = 0; i < y; i++) {
-            for(int j = 0; j < x; j++) {
-                map[i][j] = new AirTile(i, j);
-            }
+        Tile[][] map = createEmptyMap(20, 30);
+        for(int j = 0; j < map[0].length; j++) {
+            map[map.length - 1][j] = new GroundTile();
         }
+
         return map;
     }
 }
