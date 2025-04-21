@@ -43,7 +43,7 @@ public class Game extends JPanel {
 
         playerOne = new Player(100, 400, 20, Color.BLUE);
         playerTwo = new Player(700, 400, 20, Color.RED);
-        arena = new Arena(Arena.map1, 20);
+        arena = new Arena(1, 20);
     }
 
     @Override

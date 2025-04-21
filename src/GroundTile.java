@@ -3,7 +3,7 @@ import java.awt.*;
 public class GroundTile extends Tile {
 
     public GroundTile(int x, int y) {
-        super(0, x, y);
+        super(1, x, y);
 
     }
 
@@ -14,6 +14,9 @@ public class GroundTile extends Tile {
 
     @Override
     public void draw(Graphics g) {
-
+        g.setColor(Color.PINK);
+        g.fillRect(super.getX() * tileSize, super.getY() * tileSize, tileSize, tileSize);
+        System.out.println(super.getX() * tileSize + ", " + super.getY() * tileSize);
+        System.out.println(tileSize);
     }
 }

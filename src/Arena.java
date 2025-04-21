@@ -4,14 +4,20 @@ import java.awt.*;
 public class Arena {
 
     public static final Tile[][] emptyMap = createEmptyMap(20, 30);
-    public static final Tile[][] map1 = createMap1();
 
 
     private Tile[][] map;
 
-    public Arena(Tile[][] map, int tileSize) {
-        this.map = map;
+    public Arena(int mapCode, int tileSize) {
         Tile.setTileSize(tileSize);
+        switch(mapCode) {
+            case 1:
+                map = createMap1();
+                break;
+            case 2:
+            default:
+                map = createEmptyMap(20, 30);
+        }
     }
 
     public Tile[][] getMap() {
@@ -42,10 +48,11 @@ public class Arena {
 
 
 
-    private static Tile[][] createMap1() {
+    public static Tile[][] createMap1() {
         Tile[][] map = createEmptyMap(20, 30);
         for(int j = 0; j < map[0].length; j++) {
-            map[map.length - 1][j] = new GroundTile();
+            map[map.length - 1][j] = new GroundTile(j, map.length - 1);
+            System.out.println("ground tile added at " + j + ", " + (map.length - 1) + " size " + Tile.tileSize);
         }
 
         return map;

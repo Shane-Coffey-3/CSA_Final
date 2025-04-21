@@ -5,7 +5,7 @@ public abstract class Tile extends JPanel {
 
     public static final int AIR_TILE = 0;
     public static final int GROUND_TILE = 1;
-    private static int tileSize;
+    protected static int tileSize;
 
     private final int x, y;
     private int tileType;
