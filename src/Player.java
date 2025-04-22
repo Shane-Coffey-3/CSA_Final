@@ -70,4 +70,14 @@ public class Player {
     public void setIsMovingRight(boolean isMovingRight) {
         this.isMovingRight = isMovingRight;
     }
+
+   /* public boolean isTouchingSquare() {
+        int playerCenterX = x + (size / 2);
+        int playerCentery = y + (size / 2);
+        int playerCenterX = x + (size / 2);
+        int playerCenterY = x + (size / 2);
+        if(true) {
+        //    return 1;
+        }
+    }*/
 }

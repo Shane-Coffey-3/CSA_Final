@@ -52,9 +52,9 @@ public class Game extends JPanel {
         int[] playerOneCoordinate = new int[] {(playerOne.getY() + (playerOne.getSize() / 2)) / TILE_SIZE, (playerOne.getX() + (playerOne.getSize() / 2)) / TILE_SIZE};
         int[] playerTwoCoordinate = new int[] {(playerTwo.getY() + (playerTwo.getSize() / 2)) / TILE_SIZE, (playerTwo.getX() + (playerTwo.getSize() / 2)) / TILE_SIZE};
 
-        if((arena.getTileAt(playerOneCoordinate)).getTileType() == Tile.GROUND_TILE) {
+        //if((arena.getTileAt(playerOneCoordinate)).getTileType() == Tile.GROUND_TILE && playerOne.isTouchingTile()) {
 
-        }
+        //}
 
         super.paintComponent(g);
         playerOne.draw(g, getSize());
