@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class Tile extends JPanel {
+public class Tile extends JPanel {
 
     public static final int AIR_TILE = 0;
     public static final int GROUND_TILE = 1;
@@ -10,7 +10,7 @@ public abstract class Tile extends JPanel {
     private int x, y;
     private int tileType;
 
-    public Tile(int tileType, int x, int y) {
+    public Tile(int x, int y, int tileType) {
         this.tileType = tileType;
         this.x = x;
         this.y = y;
@@ -20,7 +20,9 @@ public abstract class Tile extends JPanel {
         tileSize = newTileSize;
     }
 
-    public abstract int getTileType();
+    public int getTileType() {
+        return tileType;
+    }
 
     @Override
     public int getX() {
@@ -32,5 +34,19 @@ public abstract class Tile extends JPanel {
         return y;
     }
 
-    public abstract void draw(Graphics g);
+    public void draw(Graphics g) {
+        Color color;
+        switch(tileType) {
+            case AIR_TILE:
+                color = Color.cyan;
+                break;
+            case GROUND_TILE:
+                color = Color.BLACK;
+            default:
+                color = Color.WHITE;
+        }
+
+        g.setColor(color);
+        g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+    }
 }

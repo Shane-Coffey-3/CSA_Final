@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.awt.*;
 
 public class Player {
@@ -16,8 +15,19 @@ public class Player {
         this.color = color;
     }
 
-    public void draw(Graphics g, Dimension screenSize) {
+    public void draw(Graphics g, Dimension screenSize, Tile[][] map) {
         updateHeight(screenSize.height);
+
+        int lXTile = x / Tile.tileSize;
+        int rXTile = (x + size) / Tile.tileSize;
+        int tYTile = y / Tile.tileSize;
+        int bYTile = (y + size) / Tile.tileSize;
+
+        // collisions
+        interactAllTiles(lXTile, rXTile, tYTile, bYTile, map);
+
+        // bottom touching
+
 
         if(isMovingLeft) x -= speed;
         if(isMovingRight) x += speed;
@@ -71,13 +81,27 @@ public class Player {
         this.isMovingRight = isMovingRight;
     }
 
-   /* public boolean isTouchingSquare() {
-        int playerCenterX = x + (size / 2);
-        int playerCentery = y + (size / 2);
-        int playerCenterX = x + (size / 2);
-        int playerCenterY = x + (size / 2);
-        if(true) {
-        //    return 1;
+    private void interactAllTiles(int lXTile, int rXTile, int tYTile, int bYTile, Tile[][] map) {
+        for(int i = lXTile; i <= rXTile; i++) {
+            interactTile(i, bYTile, map);
         }
-    }*/
+    }
+
+    private void interactTile(int x, int y, Tile[][] map) {
+        if(y >= map.length || y < 0 || x >= map[0].length || x < 0) {
+            return;
+        }
+        switch(map[y][x].getTileType()) {
+            case(Tile.AIR_TILE):
+                break;
+            case(Tile.GROUND_TILE):
+                color = Color.GREEN;
+                this.y = (y * Tile.tileSize) - size;
+                verticalVelocity = 1;
+                break;
+            default:
+                break;
+        }
+    }
+
 }

@@ -57,9 +57,11 @@ public class Game extends JPanel {
         //}
 
         super.paintComponent(g);
-        playerOne.draw(g, getSize());
-        playerTwo.draw(g, getSize());
+
         arena.drawTiles(g);
+
+        playerOne.draw(g, getSize(), arena.getMap());
+        playerTwo.draw(g, getSize(), arena.getMap());
 
         try {
             Thread.sleep(20);

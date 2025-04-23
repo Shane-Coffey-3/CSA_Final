@@ -40,7 +40,7 @@ public class Arena {
         Tile[][] map = new Tile[y][x];
         for(int i = 0; i < y; i++) {
             for(int j = 0; j < x; j++) {
-                map[i][j] = new AirTile(i, j);
+                map[i][j] = new Tile(j, i, Tile.AIR_TILE);
             }
         }
         return map;
@@ -51,7 +51,8 @@ public class Arena {
     public static Tile[][] createMap1() {
         Tile[][] map = createEmptyMap(20, 30);
         for(int j = 0; j < map[0].length; j++) {
-            map[map.length - 1][j] = new GroundTile(j, map.length - 1);
+            map[map.length - 1][j] = new Tile(j, map.length - 1, Tile.GROUND_TILE);
+            System.out.println(map[map.length - 1][j].getX() + ", " + map[map.length - 1][j].getY());
             System.out.println("ground tile added at " + j + ", " + (map.length - 1) + " size " + Tile.tileSize);
         }
 
