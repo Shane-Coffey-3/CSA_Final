@@ -95,13 +95,33 @@ public class Player {
             case(Tile.AIR_TILE):
                 break;
             case(Tile.GROUND_TILE):
-                color = Color.GREEN;
-                this.y = (y * Tile.tileSize) - size;
+                moveOutOfTile(x, y);
                 verticalVelocity = 1;
                 break;
             default:
                 break;
         }
+    }
+
+    private void moveOutOfTile(int tileXInArr, int tileYInArr) {
+        x = tileXInArr * Tile.tileSize;
+        y = tileYInArr * Tile.tileSize;
+
+        int distMoveUp = (this.y + this.size) - y;
+        int distMoveDown = (y + Tile.tileSize) - this.y;
+        int distMoveLeft = (this.x + this.size) - x;
+        int distMoveRight = (x + Tile.tileSize) - this.x;
+
+        if(distMoveLeft < distMoveDown && distMoveLeft < distMoveUp && distMoveLeft < distMoveRight) {
+            this.x = x - this.size;
+        } else if(distMoveRight < distMoveDown && distMoveRight < distMoveUp) {
+            this.x = x + Tile.tileSize;
+        } else if(distMoveUp < distMoveDown) {
+            this.y = y - this.size;
+        } else {
+            this.y = y + Tile.tileSize;
+        }
+
     }
 
 }
