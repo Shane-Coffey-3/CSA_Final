@@ -23,14 +23,11 @@ public class Player {
         int tYTile = y / Tile.tileSize;
         int bYTile = (y + size) / Tile.tileSize;
 
-        // collisions
-        interactAllTiles(lXTile, rXTile, tYTile, bYTile, map);
-
-        // bottom touching
-
-
         if(isMovingLeft) x -= speed;
         if(isMovingRight) x += speed;
+
+        // collisions
+        interactAllTiles(lXTile, rXTile, tYTile, bYTile, map);
 
         g.setColor(color);
         g.fillRect(x, y, size, size);
@@ -84,6 +81,7 @@ public class Player {
     private void interactAllTiles(int lXTile, int rXTile, int tYTile, int bYTile, Tile[][] map) {
         for(int i = lXTile; i <= rXTile; i++) {
             interactTile(i, bYTile, map);
+            interactTile(i, tYTile, map);
         }
     }
 
@@ -104,22 +102,18 @@ public class Player {
     }
 
     private void moveOutOfTile(int tileXInArr, int tileYInArr) {
-        x = tileXInArr * Tile.tileSize;
-        y = tileYInArr * Tile.tileSize;
+        int x = tileXInArr * Tile.tileSize;
+        int y = tileYInArr * Tile.tileSize;
 
-        int distMoveUp = (this.y + this.size) - y;
-        int distMoveDown = (y + Tile.tileSize) - this.y;
-        int distMoveLeft = (this.x + this.size) - x;
-        int distMoveRight = (x + Tile.tileSize) - this.x;
+        int verticalOverlap = Math.min((this.y + this.size) - y, (y + Tile.tileSize) - this.y);
+        int horizontalOverlap = 1000;
 
-        if(distMoveLeft < distMoveDown && distMoveLeft < distMoveUp && distMoveLeft < distMoveRight) {
-            this.x = x - this.size;
-        } else if(distMoveRight < distMoveDown && distMoveRight < distMoveUp) {
-            this.x = x + Tile.tileSize;
-        } else if(distMoveUp < distMoveDown) {
-            this.y = y - this.size;
-        } else {
-            this.y = y + Tile.tileSize;
+        if(verticalOverlap < horizontalOverlap) {
+            if(this.y > y) {
+                this.y = y - this.size;
+            } else {
+                this.y = y + Tile.tileSize;
+            }
         }
 
     }
