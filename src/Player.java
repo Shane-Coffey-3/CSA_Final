@@ -2,11 +2,15 @@ import java.awt.*;
 
 public class Player {
 
-    private int x, y, size, speed = 10;
+    private double x, y, size;
+    double speed = 0.75;
     private Color color;
     double verticalVelocity = 0;
-    double jumpStrength = 20;
+    double jumpStrength = 2.5;
     boolean isMovingLeft, isMovingRight;
+    double slowedRate = 1;
+
+    boolean isTouchingGround, isTouchingCeiling, isTouchingLeftWall, isTouchingRightWall;
 
     public Player(int x, int y, int size, Color color) {
             this.x = x;
@@ -15,34 +19,34 @@ public class Player {
         this.color = color;
     }
 
-    public void draw(Graphics g, Dimension screenSize, Tile[][] map) {
-        updateHeight(screenSize.height);
+    public void draw(Graphics g, Dimension screenSize, Tile[][] map, int time) {
+        updateHeight(screenSize.height, time);
 
-        int lXTile = x / Tile.tileSize;
-        int rXTile = (x + size) / Tile.tileSize;
-        int tYTile = y / Tile.tileSize;
-        int bYTile = (y + size) / Tile.tileSize;
+        int lXTile =(int) (x / Tile.tileSize);
+        int rXTile = (int) ((x + size) / Tile.tileSize);
+        int tYTile = (int) (y / Tile.tileSize);
+        int bYTile = (int) ((y + size) / Tile.tileSize);
 
-        if(isMovingLeft) x -= speed;
-        if(isMovingRight) x += speed;
-
+        if(isMovingLeft) x -= (speed * time);
+        if(isMovingRight) x += (speed * time);
         // collisions
         interactAllTiles(lXTile, rXTile, tYTile, bYTile, map);
 
         g.setColor(color);
-        g.fillRect(x, y, size, size);
+        System.out.println("x: " + x + "\ty: " + y + "\tsize: " + size);
+        g.fillRect((int) x, (int) y, (int) size, (int) size);
     }
 
     public int getX() {
-        return x;
+        return (int) x;
     }
 
     public int getY() {
-        return y;
+        return (int) y;
     }
 
     public int getSize() {
-        return size;
+        return (int) size;
     }
 
     public void setX(int x) {
@@ -58,12 +62,14 @@ public class Player {
     }
 
     public void jump() {
-        verticalVelocity = -jumpStrength;
+        if(!isTouchingCeiling) {
+            verticalVelocity = -jumpStrength;
+        }
     }
 
-    public void updateHeight(int screenHeight) {
-        verticalVelocity++;
-        y += (int) verticalVelocity;
+    public void updateHeight(int screenHeight, int time) {
+        verticalVelocity += (0.01) * time;
+        y += verticalVelocity;
 
         if(y + size > screenHeight) {
             y = screenHeight - size;
@@ -79,13 +85,23 @@ public class Player {
     }
 
     private void interactAllTiles(int lXTile, int rXTile, int tYTile, int bYTile, Tile[][] map) {
+        slowedRate = 1;
         for(int i = lXTile; i <= rXTile; i++) {
             interactTile(i, bYTile, map);
             interactTile(i, tYTile, map);
         }
+
+        for(int i = tYTile; i <= bYTile; i++) {
+            interactTile(i, lXTile, map);
+            interactTile(i, rXTile, map);
+        }
     }
 
     private void interactTile(int x, int y, Tile[][] map) {
+        isTouchingCeiling = false;
+        isTouchingGround = false;
+        isTouchingLeftWall = false;
+        isTouchingRightWall = false;
         if(y >= map.length || y < 0 || x >= map[0].length || x < 0) {
             return;
         }
@@ -94,7 +110,6 @@ public class Player {
                 break;
             case(Tile.GROUND_TILE):
                 moveOutOfTile(x, y);
-                verticalVelocity = 1;
                 break;
             default:
                 break;
@@ -102,17 +117,28 @@ public class Player {
     }
 
     private void moveOutOfTile(int tileXInArr, int tileYInArr) {
-        int x = tileXInArr * Tile.tileSize;
-        int y = tileYInArr * Tile.tileSize;
+        int tileX = tileXInArr * Tile.tileSize;
+        int tileY = tileYInArr * Tile.tileSize;
 
-        int verticalOverlap = Math.min((this.y + this.size) - y, (y + Tile.tileSize) - this.y);
-        int horizontalOverlap = 1000;
+        int verticalOverlap = (int) Math.min((this.y + this.size) - tileY, (tileY + Tile.tileSize) - this.y);
+        int horizontalOverlap = (int) Math.min((this.x + this.size) - tileX, (tileX + Tile.tileSize) - this.x);;
 
-        if(verticalOverlap < horizontalOverlap) {
-            if(this.y > y) {
-                this.y = y - this.size;
+        if(verticalOverlap > 0 && horizontalOverlap > 0 && verticalOverlap < horizontalOverlap) {
+            if(verticalVelocity > 0) {
+                this.y = tileY - this.size;
+                isTouchingGround = true;
             } else {
-                this.y = y + Tile.tileSize;
+                this.y = tileY + Tile.tileSize;
+                isTouchingCeiling = true;
+            }
+            verticalVelocity = 0;
+        } else if(verticalOverlap > 0 && horizontalOverlap > 0) {
+            if(this.x < tileX) {
+                this.x = tileX - this.size;
+                isTouchingLeftWall = true;
+            } else {
+                this.x = tileX + Tile.tileSize;
+                isTouchingRightWall = true;
             }
         }
 
