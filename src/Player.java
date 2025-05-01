@@ -3,10 +3,10 @@ import java.awt.*;
 public class Player {
 
     private double x, y, size;
-    double speed = 0.75;
+    double speed = 0.5;
     private Color color;
     double verticalVelocity = 0;
-    double jumpStrength = 2.5;
+    double jumpStrength = 2.2;
     boolean isMovingLeft, isMovingRight;
     double slowedRate = 1;
 
@@ -27,13 +27,12 @@ public class Player {
         int tYTile = (int) (y / Tile.tileSize);
         int bYTile = (int) ((y + size) / Tile.tileSize);
 
-        if(isMovingLeft) x -= (speed * time);
-        if(isMovingRight) x += (speed * time);
+        if(isMovingLeft) x -= (speed * time * slowedRate);
+        if(isMovingRight) x += (speed * time * slowedRate);
         // collisions
         interactAllTiles(lXTile, rXTile, tYTile, bYTile, map);
 
         g.setColor(color);
-        System.out.println("x: " + x + "\ty: " + y + "\tsize: " + size);
         g.fillRect((int) x, (int) y, (int) size, (int) size);
     }
 
@@ -69,8 +68,11 @@ public class Player {
 
     public void updateHeight(int screenHeight, int time) {
         verticalVelocity += (0.01) * time;
-        y += verticalVelocity;
-
+        if(isTouchingGround) {
+            verticalVelocity = 0;
+        }
+        y += verticalVelocity * slowedRate;
+        System.out.println("touching ground: " + isTouchingGround + "   speed: " + verticalVelocity);
         if(y + size > screenHeight) {
             y = screenHeight - size;
         }
@@ -85,23 +87,26 @@ public class Player {
     }
 
     private void interactAllTiles(int lXTile, int rXTile, int tYTile, int bYTile, Tile[][] map) {
+        System.out.println("im lost at y = " + y);
+        isTouchingCeiling = false;
+        isTouchingGround = false;
+        isTouchingLeftWall = false;
+        isTouchingRightWall = false;
+
         slowedRate = 1;
-        for(int i = lXTile; i <= rXTile; i++) {
-            interactTile(i, bYTile, map);
-            interactTile(i, tYTile, map);
-        }
 
         for(int i = tYTile; i <= bYTile; i++) {
             interactTile(i, lXTile, map);
             interactTile(i, rXTile, map);
         }
+
+        for(int i = lXTile; i <= rXTile; i++) {
+            interactTile(i, bYTile, map);
+            interactTile(i, tYTile, map);
+        }
     }
 
     private void interactTile(int x, int y, Tile[][] map) {
-        isTouchingCeiling = false;
-        isTouchingGround = false;
-        isTouchingLeftWall = false;
-        isTouchingRightWall = false;
         if(y >= map.length || y < 0 || x >= map[0].length || x < 0) {
             return;
         }
@@ -127,18 +132,24 @@ public class Player {
             if(verticalVelocity > 0) {
                 this.y = tileY - this.size;
                 isTouchingGround = true;
+                System.out.println("im rouching the ground");
             } else {
                 this.y = tileY + Tile.tileSize;
-                isTouchingCeiling = true;
+                if(horizontalOverlap > 3) {
+                    isTouchingCeiling = true;
+                }
             }
-            verticalVelocity = 0;
         } else if(verticalOverlap > 0 && horizontalOverlap > 0) {
             if(this.x < tileX) {
                 this.x = tileX - this.size;
-                isTouchingLeftWall = true;
+                if(verticalOverlap > 3) {
+                    isTouchingLeftWall = true;
+                }
             } else {
-                this.x = tileX + Tile.tileSize;
-                isTouchingRightWall = true;
+                this.x = tileX + Tile.tileSize + 5;
+                if(verticalOverlap > 3) {
+                    isTouchingRightWall = true;
+                }
             }
         }
 

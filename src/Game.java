@@ -31,12 +31,12 @@ public class Game extends JPanel {
                     playerOne.jump();
                 }
 
-                if(e.getKeyCode() == 1) {
-                    playerOne.setIsMovingLeft(true);
-                } else if(e.getKeyCode() == 1) {
-                    playerOne.setIsMovingRight(true);
-                } else if(e.getKeyCode() == 1) {
-                    playerOne.jump();
+                if(e.getKeyCode() == 37) {
+                    playerTwo.setIsMovingLeft(true);
+                } else if(e.getKeyCode() == 39) {
+                    playerTwo.setIsMovingRight(true);
+                } else if(e.getKeyCode() == 38) {
+                    playerTwo.jump();
                 }
                 System.out.println(e.getKeyCode());
             }
@@ -47,13 +47,17 @@ public class Game extends JPanel {
                     playerOne.setIsMovingLeft(false);
                 } else if(e.getKeyChar() == 'd') {
                     playerOne.setIsMovingRight(false);
+                } else if(e.getKeyCode() == 37) {
+                    playerTwo.setIsMovingLeft(false);
+                } else if(e.getKeyCode() == 39) {
+                    playerTwo.setIsMovingRight(false);
                 }
             }
         });
 
         playerOne = new Player(100, 100, 20, Color.BLUE);
         playerTwo = new Player(700, 100, 20, Color.RED);
-        arena = new Arena(1, 20);
+        arena = new Arena(1, tileSize);
     }
 
     @Override
@@ -70,7 +74,6 @@ public class Game extends JPanel {
             Thread.sleep(1);
             duration = System.currentTimeMillis() - prevMillis;
             prevMillis = System.currentTimeMillis();
-            System.out.println(duration);
         } catch(Exception e){
             System.out.println("Exception:\n" + e);
         }
@@ -79,5 +82,13 @@ public class Game extends JPanel {
 
 
         repaint();
+    }
+
+    public int getHeightOfGame() {
+        return (arena.getMap().length + 1) * Tile.tileSize;
+    }
+
+    public int getWidthOfGame() {
+        return arena.getMap()[0].length* Tile.tileSize;
     }
 }
