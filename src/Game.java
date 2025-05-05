@@ -55,8 +55,8 @@ public class Game extends JPanel {
             }
         });
 
-        playerOne = new Player(100, 100, 20, Color.BLUE);
-        playerTwo = new Player(700, 100, 20, Color.RED);
+        playerOne = new Player(100, 100, tileSize - 1, Color.CYAN);
+        playerTwo = new Player(700, 100, tileSize - 1, Color.RED);
         arena = new Arena(1, tileSize);
     }
 

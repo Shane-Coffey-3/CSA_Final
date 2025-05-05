@@ -3,10 +3,10 @@ import java.awt.*;
 public class Player {
 
     private double x, y, size;
-    double speed = 0.5;
+    double speed = 0.38;
     private Color color;
     double verticalVelocity = 0;
-    double jumpStrength = 2.2;
+    double jumpStrength = 1.8;
     boolean isMovingLeft, isMovingRight;
     double slowedRate = 1;
 
@@ -67,7 +67,7 @@ public class Player {
     }
 
     public void updateHeight(int screenHeight, int time) {
-        verticalVelocity += (0.01) * time;
+        verticalVelocity += (0.008) * time;
         if(isTouchingGround) {
             verticalVelocity = 0;
         }
@@ -96,8 +96,8 @@ public class Player {
         slowedRate = 1;
 
         for(int i = tYTile; i <= bYTile; i++) {
-            interactTile(i, lXTile, map);
-            interactTile(i, rXTile, map);
+            interactTile(lXTile, i, map);
+            interactTile(rXTile, i, map);
         }
 
         for(int i = lXTile; i <= rXTile; i++) {
@@ -116,6 +116,8 @@ public class Player {
             case(Tile.GROUND_TILE):
                 moveOutOfTile(x, y);
                 break;
+            case(Tile.WATER_TILE):
+                slowedRate = 0.5;
             default:
                 break;
         }
@@ -132,24 +134,18 @@ public class Player {
             if(verticalVelocity > 0) {
                 this.y = tileY - this.size;
                 isTouchingGround = true;
-                System.out.println("im rouching the ground");
+                System.out.println("im touching the ground");
             } else {
                 this.y = tileY + Tile.tileSize;
-                if(horizontalOverlap > 3) {
-                    isTouchingCeiling = true;
-                }
+                isTouchingCeiling = true;
             }
         } else if(verticalOverlap > 0 && horizontalOverlap > 0) {
             if(this.x < tileX) {
                 this.x = tileX - this.size;
-                if(verticalOverlap > 3) {
-                    isTouchingLeftWall = true;
-                }
+                isTouchingLeftWall = true;
             } else {
-                this.x = tileX + Tile.tileSize + 5;
-                if(verticalOverlap > 3) {
-                    isTouchingRightWall = true;
-                }
+                this.x = tileX + Tile.tileSize + 1;
+                isTouchingRightWall = true;
             }
         }
 

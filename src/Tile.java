@@ -39,10 +39,14 @@ public class Tile extends JPanel {
         Color color;
         switch(tileType) {
             case AIR_TILE:
-                color = Color.cyan;
+                color = Color.GRAY;
                 break;
             case GROUND_TILE:
                 color = Color.BLACK;
+                break;
+            case WATER_TILE:
+                color = Color.BLUE;
+                break;
             default:
                 color = Color.WHITE;
         }
