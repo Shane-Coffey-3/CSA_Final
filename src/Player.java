@@ -3,12 +3,14 @@ import java.awt.*;
 public class Player {
 
     private double x, y, size;
-    double speed = 0.38;
+    private double speed = 0.38;
     private Color color;
-    double verticalVelocity = 0;
-    double jumpStrength = 1.8;
-    boolean isMovingLeft, isMovingRight;
-    double slowedRate = 1;
+    private double verticalVelocity = 0;
+    private double jumpStrength = 2.6;
+    private boolean isMovingLeft, isMovingRight;
+    private double slowedRate = 1;
+    private boolean canJump;
+
 
     boolean isTouchingGround, isTouchingCeiling, isTouchingLeftWall, isTouchingRightWall;
 
@@ -60,8 +62,16 @@ public class Player {
         this.size = size;
     }
 
-    public void jump() {
-        if(!isTouchingCeiling) {
+    public void jump(Tile[][] map) {
+        if(!canJump) {
+            int tileY = (int)(y + size + 2) / Tile.tileSize;
+            int tileX = (int)(x) / Tile.tileSize;
+            if(map[tileY][tileX] != null && map[tileY][tileX].isSolid()) {
+                canJump = true;
+                System.out.println("i can jump yippee");
+            }
+        }
+        if(!isTouchingCeiling && canJump) {
             verticalVelocity = -jumpStrength;
         }
     }
@@ -72,7 +82,6 @@ public class Player {
             verticalVelocity = 0;
         }
         y += verticalVelocity * slowedRate;
-        System.out.println("touching ground: " + isTouchingGround + "   speed: " + verticalVelocity);
         if(y + size > screenHeight) {
             y = screenHeight - size;
         }
@@ -87,11 +96,12 @@ public class Player {
     }
 
     private void interactAllTiles(int lXTile, int rXTile, int tYTile, int bYTile, Tile[][] map) {
-        System.out.println("im lost at y = " + y);
         isTouchingCeiling = false;
         isTouchingGround = false;
         isTouchingLeftWall = false;
         isTouchingRightWall = false;
+        canJump = false;
+        jumpStrength = 2.6;
 
         slowedRate = 1;
 
@@ -117,7 +127,17 @@ public class Player {
                 moveOutOfTile(x, y);
                 break;
             case(Tile.WATER_TILE):
+                canJump = true;
                 slowedRate = 0.5;
+                jumpStrength = 1.8;
+                if(verticalVelocity > 1) {
+                    verticalVelocity = 1;
+                }
+                break;
+            case(Tile.JUMP_TILE):
+                jumpStrength = 5.2;
+                moveOutOfTile(x, y);
+                break;
             default:
                 break;
         }
@@ -133,8 +153,8 @@ public class Player {
         if(verticalOverlap > 0 && horizontalOverlap > 0 && verticalOverlap < horizontalOverlap) {
             if(verticalVelocity > 0) {
                 this.y = tileY - this.size;
+                canJump = true;
                 isTouchingGround = true;
-                System.out.println("im touching the ground");
             } else {
                 this.y = tileY + Tile.tileSize;
                 isTouchingCeiling = true;
@@ -152,3 +172,9 @@ public class Player {
     }
 
 }
+/*
+
+I am shane and i am smart at coding ;)
+La la la la la
+
+ */

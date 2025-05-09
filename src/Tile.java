@@ -6,7 +6,8 @@ public class Tile extends JPanel {
     public static final int AIR_TILE = 0;
     public static final int GROUND_TILE = 1;
     public static final int WATER_TILE = 2;
-    protected static int tileSize;
+    public static final int JUMP_TILE = 3;
+    public static int tileSize;
 
     private int x, y;
     private int tileType;
@@ -47,11 +48,26 @@ public class Tile extends JPanel {
             case WATER_TILE:
                 color = Color.BLUE;
                 break;
+            case JUMP_TILE:
+                color = Color.GREEN;
+                break;
             default:
                 color = Color.WHITE;
         }
 
         g.setColor(color);
         g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+    }
+
+    public boolean isSolid() {
+        return switch (tileType) {
+            case AIR_TILE, WATER_TILE -> false;
+            case GROUND_TILE, JUMP_TILE -> true;
+            default -> false;
+        };
+    }
+
+    public void setTileType(int newTileType) {
+        tileType = newTileType;
     }
 }

@@ -7,13 +7,38 @@ public class Game extends JPanel {
     private Arena arena;
     private Player playerOne;
     private Player playerTwo;
-    private final int TILE_SIZE;
 
-    public Game(int tileSize) {
-        TILE_SIZE = tileSize;
+    public Game(int tileSize, int mapCode) {
         setFocusable(true);
         requestFocus();
         setBackground(Color.LIGHT_GRAY);
+
+        addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
 
         addKeyListener(new KeyListener() {
             @Override
@@ -28,7 +53,7 @@ public class Game extends JPanel {
                 } else if(e.getKeyChar() == 'd') {
                     playerOne.setIsMovingRight(true);
                 } else if(e.getKeyChar() == 'w') {
-                    playerOne.jump();
+                    playerOne.jump(arena.getMap());
                 }
 
                 if(e.getKeyCode() == 37) {
@@ -36,9 +61,8 @@ public class Game extends JPanel {
                 } else if(e.getKeyCode() == 39) {
                     playerTwo.setIsMovingRight(true);
                 } else if(e.getKeyCode() == 38) {
-                    playerTwo.jump();
+                    playerTwo.jump(arena.getMap());
                 }
-                System.out.println(e.getKeyCode());
             }
 
             @Override
@@ -57,7 +81,7 @@ public class Game extends JPanel {
 
         playerOne = new Player(100, 100, tileSize - 1, Color.CYAN);
         playerTwo = new Player(700, 100, tileSize - 1, Color.RED);
-        arena = new Arena(1, tileSize);
+        arena = new Arena(mapCode, tileSize);
     }
 
     @Override
