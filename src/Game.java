@@ -7,6 +7,8 @@ public class Game extends JPanel {
     private Arena arena;
     private Player playerOne;
     private Player playerTwo;
+    private boolean inEditorMode = false;
+    private boolean shiftPressed = false;
 
     public Game(int tileSize, int mapCode) {
         setFocusable(true);
@@ -21,7 +23,15 @@ public class Game extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-
+                if(inEditorMode) {
+                    int[] coord = {e.getY() / Tile.tileSize, e.getX() / Tile.tileSize};
+                    Tile tile = arena.getMap()[coord[0]][coord[1]];
+                    if(shiftPressed) {
+                        tile.setTileType(tile.getTileType() - 1);
+                    } else {
+                        tile.setTileType(tile.getTileType() + 1);
+                    }
+                }
             }
 
             @Override
@@ -54,6 +64,8 @@ public class Game extends JPanel {
                     playerOne.setIsMovingRight(true);
                 } else if(e.getKeyChar() == 'w') {
                     playerOne.jump(arena.getMap());
+                } else if(e.getKeyChar() == 'e') {
+                    inEditorMode = !inEditorMode;
                 }
 
                 if(e.getKeyCode() == 37) {
@@ -62,7 +74,10 @@ public class Game extends JPanel {
                     playerTwo.setIsMovingRight(true);
                 } else if(e.getKeyCode() == 38) {
                     playerTwo.jump(arena.getMap());
+                } else if(e.getKeyCode() == 16) {
+                    shiftPressed = true;
                 }
+                System.out.println(e.getKeyCode());
             }
 
             @Override
@@ -75,6 +90,8 @@ public class Game extends JPanel {
                     playerTwo.setIsMovingLeft(false);
                 } else if(e.getKeyCode() == 39) {
                     playerTwo.setIsMovingRight(false);
+                } else if(e.getKeyCode() == 16) {
+                    shiftPressed = false;
                 }
             }
         });

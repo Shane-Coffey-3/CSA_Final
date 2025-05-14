@@ -143,4 +143,14 @@ public class Arena {
 
         return map;
     }
+
+    public void printAsNumbers() {
+        for(Tile[] arr : map) {
+            System.out.print("{");
+            for(int i = 0; i < arr.length - 1; i++) {
+                System.out.print(arr[i].getTileType() + ", ");
+            }
+            System.out.println(arr[arr.length - 1].getTileType() + "},");
+        }
+    }
 }
