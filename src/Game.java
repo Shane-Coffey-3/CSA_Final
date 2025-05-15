@@ -66,6 +66,8 @@ public class Game extends JPanel {
                     playerOne.jump(arena.getMap());
                 } else if(e.getKeyChar() == 'e') {
                     inEditorMode = !inEditorMode;
+                } else if(e.getKeyChar() == 'p') {
+                    arena.printAsNumbers();
                 }
 
                 if(e.getKeyCode() == 37) {
