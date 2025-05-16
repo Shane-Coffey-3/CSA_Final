@@ -15,9 +15,9 @@ public class Player {
     boolean isTouchingGround, isTouchingCeiling, isTouchingLeftWall, isTouchingRightWall;
 
     public Player(int x, int y, int size, Color color) {
-            this.x = x;
-            this.y = y;
-            this.size = size;
+        this.x = x;
+        this.y = y;
+        this.size = size;
         this.color = color;
     }
 
@@ -123,7 +123,7 @@ public class Player {
         switch(map[y][x].getTileType()) {
             case(Tile.AIR_TILE):
                 break;
-            case(Tile.GROUND_TILE):
+            case (Tile.GROUND_TILE), (Tile.BORDER_TILE):
                 moveOutOfTile(x, y);
                 break;
             case(Tile.WATER_TILE):
@@ -157,6 +157,7 @@ public class Player {
                 isTouchingGround = true;
             } else {
                 this.y = tileY + Tile.tileSize;
+                verticalVelocity = 0;
                 isTouchingCeiling = true;
             }
         } else if(verticalOverlap > 0 && horizontalOverlap > 0) {
