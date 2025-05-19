@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 
+// blah blah blah
+
 public class Arena {
 
     public static final Tile[][] emptyMap = createEmptyMap(40, 60);
