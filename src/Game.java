@@ -108,7 +108,7 @@ public class Game extends JPanel {
 
         super.paintComponent(g);
 
-        arena.drawTiles(g);
+        arena.drawTiles(g, this);
 
         playerOne.draw(g, getSize(), arena.getMap(), (int) duration);
         playerTwo.draw(g, getSize(), arena.getMap(), (int) duration);
@@ -133,5 +133,9 @@ public class Game extends JPanel {
 
     public int getWidthOfGame() {
         return arena.getMap()[0].length* Tile.tileSize;
+    }
+
+    public boolean getInEditorMode() {
+        return inEditorMode;
     }
 }

@@ -10,7 +10,7 @@ public class Tile extends JPanel {
     public static final int BORDER_TILE = 4;
     public static int tileSize;
 
-    private static Color borderColor = Color.BLACK;
+    private static float borderColor = 0;
 
     private int x, y;
     private int tileType;
@@ -39,7 +39,7 @@ public class Tile extends JPanel {
         return y;
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, Game game) {
         Color color;
         switch(tileType) {
             case AIR_TILE:
@@ -55,7 +55,13 @@ public class Tile extends JPanel {
                 color = Color.GREEN;
                 break;
             case BORDER_TILE:
-                color = borderColor;
+                if(game.getInEditorMode()) {
+                    color = Color.getHSBColor(borderColor, 1, 1);
+                    System.out.println(borderColor);
+                    incrementBorderColor();
+                } else {
+                    color = Color.BLACK;
+                }
                 break;
             default:
                 color = Color.WHITE;
@@ -77,11 +83,7 @@ public class Tile extends JPanel {
         tileType = newTileType;
     }
 
-    public static void setBorderColor(Color newColor) {
-        borderColor = newColor;
-    }
-
-    public static Color getBorderColor()  {
-        return borderColor;
+    public static void incrementBorderColor() {
+        borderColor = (float) (borderColor + 0.000002);
     }
 }

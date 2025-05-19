@@ -8,6 +8,7 @@ public class Arena {
     public static final Tile[][] emptyMap = createEmptyMap(40, 60);
 
     private Tile[][] map;
+    private int[] spawn;
 
     public Arena(int mapCode, int tileSize) {
         Tile.setTileSize(tileSize);
@@ -31,10 +32,10 @@ public class Arena {
         return map[arr[0]][arr[1]];
     }
 
-    public void drawTiles(Graphics g) {
+    public void drawTiles(Graphics g, Game game) {
         for(Tile[] tileArr : map) {
             for(Tile tile : tileArr) {
-                tile.draw(g);
+                tile.draw(g, game);
             }
         }
     }
