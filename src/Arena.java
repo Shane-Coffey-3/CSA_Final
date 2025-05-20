@@ -9,6 +9,7 @@ public class Arena {
 
     private Tile[][] map;
     private int[] spawn;
+    private int tileOffset = 0;
 
     public Arena(int mapCode, int tileSize) {
         Tile.setTileSize(tileSize);
@@ -72,5 +73,18 @@ public class Arena {
             }
             System.out.println(arr[arr.length - 1].getTileType() + "},");
         }
+    }
+
+    public void moveUp() {
+        Tile[] topRow = map[0];
+        for(int i = 0; i < map.length - 1; i++) {
+            map[i] = map[i + 1];
+        }
+        map[map.length - 1] = topRow;
+        tileOffset += Tile.tileSize;
+    }
+
+    public int getTileOffset() {
+        return tileOffset;
     }
 }

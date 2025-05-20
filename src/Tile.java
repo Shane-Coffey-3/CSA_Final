@@ -67,7 +67,7 @@ public class Tile extends JPanel {
         }
 
         g.setColor(color);
-        g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+        g.fillRect(x * tileSize, (y * tileSize + game.getArena().getTileOffset()) % 720, tileSize, tileSize);
     }
 
     public boolean isSolid() {

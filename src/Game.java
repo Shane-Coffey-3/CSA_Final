@@ -9,6 +9,9 @@ public class Game extends JPanel {
     private Player playerTwo;
     private boolean inEditorMode = false;
     private boolean shiftPressed = false;
+    private double seconds = 0;
+    private final long startMillis = System.currentTimeMillis();
+    private boolean startMovingMap = false;
 
     public Game(int tileSize, int mapCode) {
         setFocusable(true);
@@ -113,16 +116,24 @@ public class Game extends JPanel {
         playerOne.draw(g, getSize(), arena.getMap(), (int) duration);
         playerTwo.draw(g, getSize(), arena.getMap(), (int) duration);
 
+        if(startMovingMap && seconds > 1) {
+            arena.moveUp();
+            seconds = 0;
+        } else if(!startMovingMap && seconds > 10) {
+            seconds = 0;
+            startMovingMap = true;
+        }
+
         try {
             Thread.sleep(1);
             duration = System.currentTimeMillis() - prevMillis;
             prevMillis = System.currentTimeMillis();
+            seconds += duration / 1000.0;
         } catch(Exception e){
             System.out.println("Exception:\n" + e);
         }
 
         // get player coordinate
-
 
         repaint();
     }
@@ -137,5 +148,9 @@ public class Game extends JPanel {
 
     public boolean getInEditorMode() {
         return inEditorMode;
+    }
+
+    public Arena getArena() {
+        return arena;
     }
 }
