@@ -14,7 +14,7 @@ public class Arena {
         Tile.setTileSize(tileSize);
         switch(mapCode) {
             case 1:
-                map = createSetMap(Maps.MAP_1_CODE);
+                map = createSetMap(Maps.floor1);
                 break;
             case 2:
                 map = createSetMap(Maps.BATTLE_MAP_CODE);
