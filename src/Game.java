@@ -117,9 +117,11 @@ public class Game extends JPanel {
         playerTwo.draw(g, getSize(), arena.getMap(), (int) duration);
 
         if(startMovingMap && seconds > 1) {
-            arena.moveUp();
+            arena.moveDown();
+            playerOne.moveDown();
+            playerTwo.moveDown();
             seconds = 0;
-        } else if(!startMovingMap && seconds > 10) {
+        } else if(!startMovingMap && seconds > 2) {
             seconds = 0;
             startMovingMap = true;
         }

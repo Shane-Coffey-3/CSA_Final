@@ -67,7 +67,8 @@ public class Tile extends JPanel {
         }
 
         g.setColor(color);
-        g.fillRect(x * tileSize, (y * tileSize + game.getArena().getTileOffset()) % 720, tileSize, tileSize);
+        //g.fillRect(x * tileSize, (y * tileSize + game.getArena().getTileOffset()) % 720, tileSize, tileSize);
+        g.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
     }
 
     public boolean isSolid() {
@@ -93,5 +94,13 @@ public class Tile extends JPanel {
 
     public static void incrementBorderColor() {
         borderColor = (float) (borderColor + 0.000002);
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 }

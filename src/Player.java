@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 
 public class Player {
@@ -88,6 +89,8 @@ public class Player {
         }
         y += verticalVelocity * slowedRate * time;
         if(y + size > screenHeight) {
+            System.out.println("player lost");
+            JOptionPane.showMessageDialog(null, "Game Over!");
             y = screenHeight - size;
         }
     }
@@ -180,6 +183,9 @@ public class Player {
 
     }
 
+    public void moveDown() {
+        y += Tile.tileSize - 1;
+    }
 }
 /*
 

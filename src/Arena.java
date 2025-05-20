@@ -75,13 +75,19 @@ public class Arena {
         }
     }
 
-    public void moveUp() {
-        Tile[] topRow = map[0];
-        for(int i = 0; i < map.length - 1; i++) {
-            map[i] = map[i + 1];
+    public void moveDown() {
+        Tile[] bottomRow = map[map.length - 1];
+        for(int i = map.length - 1; i > 0; i--) {
+            map[i] = map[i - 1];
         }
-        map[map.length - 1] = topRow;
-        tileOffset += Tile.tileSize;
+        map[0] = bottomRow;
+
+        for(int i = 0; i < map.length; i++) {
+            for(int j = 0; j < map[i].length; j++) {
+                map[i][j].setY(i);
+                map[i][j].setX(j);
+            }
+        }
     }
 
     public int getTileOffset() {
