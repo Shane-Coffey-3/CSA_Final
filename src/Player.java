@@ -6,7 +6,7 @@ public class Player {
     private double speed = 0.38;
     private Color color;
     private double verticalVelocity = 0;
-    private double jumpStrength = 2.6;
+    private double jumpStrength = (0.6 / 18) * Tile.tileSize;
     private boolean isMovingLeft, isMovingRight;
     private double slowedRate = 1;
     private boolean canJump;
@@ -64,11 +64,16 @@ public class Player {
 
     public void jump(Tile[][] map) {
         if(!canJump) {
-            int tileY = (int)(y + size + 2) / Tile.tileSize;
-            int tileX = (int)(x) / Tile.tileSize;
-            if(map[tileY][tileX] != null && map[tileY][tileX].isSolid()) {
+            int tileLeftY = (int) (y + size + 2) / Tile.tileSize;
+            int tileLeftX = (int) (x) / Tile.tileSize;
+            Tile tileLeft = map[tileLeftY][tileLeftX];
+            
+            int tileRightY = (int) (y + size + 2) / Tile.tileSize;
+            int tileRightX = (int) (x + size) / Tile.tileSize;
+            Tile tileRight = map[tileRightY][tileRightX];
+            
+            if((tileLeft != null && tileLeft.isSolid()) || (tileRight != null && tileRight.isSolid())) {
                 canJump = true;
-                System.out.println("i can jump yippee");
             }
         }
         if(!isTouchingCeiling && canJump) {
@@ -77,11 +82,11 @@ public class Player {
     }
 
     public void updateHeight(int screenHeight, int time) {
-        verticalVelocity += (0.008) * time;
+        verticalVelocity += (0.00135) * time;
         if(isTouchingGround) {
             verticalVelocity = 0;
         }
-        y += verticalVelocity * slowedRate;
+        y += verticalVelocity * slowedRate * time;
         if(y + size > screenHeight) {
             y = screenHeight - size;
         }
@@ -101,7 +106,7 @@ public class Player {
         isTouchingLeftWall = false;
         isTouchingRightWall = false;
         canJump = false;
-        jumpStrength = 2.6;
+        jumpStrength = (0.6 / 18) * Tile.tileSize;;
 
         slowedRate = 1;
 
@@ -123,19 +128,22 @@ public class Player {
         switch(map[y][x].getTileType()) {
             case(Tile.AIR_TILE):
                 break;
-            case (Tile.GROUND_TILE), (Tile.BORDER_TILE):
+            case (Tile.GROUND_TILE):
+                moveOutOfTile(x, y);
+                break;
+            case (Tile.BORDER_TILE):
                 moveOutOfTile(x, y);
                 break;
             case(Tile.WATER_TILE):
                 canJump = true;
                 slowedRate = 0.5;
-                jumpStrength = 1.8;
-                if(verticalVelocity > 1) {
-                    verticalVelocity = 1;
+                jumpStrength = (0.4 / 18) * Tile.tileSize;;
+                if(verticalVelocity > 0.25) {
+                    verticalVelocity = 0.25;
                 }
                 break;
             case(Tile.JUMP_TILE):
-                jumpStrength = 5.2;
+                jumpStrength = (1.2 / 18) * Tile.tileSize;;
                 moveOutOfTile(x, y);
                 break;
             default:
