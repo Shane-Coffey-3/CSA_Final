@@ -22,8 +22,8 @@ public class Player {
         this.color = color;
     }
 
-    public void draw(Graphics g, Dimension screenSize, Tile[][] map, int time) {
-        updateHeight(screenSize.height, time);
+    public void draw(Graphics g, Dimension screenSize, Tile[][] map, int time, Game game) {
+        updateHeight(screenSize.height, time, game);
 
         int lXTile =(int) (x / Tile.tileSize);
         int rXTile = (int) ((x + size) / Tile.tileSize);
@@ -82,16 +82,15 @@ public class Player {
         }
     }
 
-    public void updateHeight(int screenHeight, int time) {
+    public void updateHeight(int screenHeight, int time, Game game) {
         verticalVelocity += (0.00135) * time;
         if(isTouchingGround) {
             verticalVelocity = 0;
         }
         y += verticalVelocity * slowedRate * time;
         if(y + size > screenHeight) {
-            System.out.println("player lost");
-            JOptionPane.showMessageDialog(null, "Game Over!");
-            y = screenHeight - size;
+            y = -1000;
+            game.playerWins(color);
         }
     }
 

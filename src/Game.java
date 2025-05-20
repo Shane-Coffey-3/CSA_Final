@@ -12,6 +12,11 @@ public class Game extends JPanel {
     private double seconds = 0;
     private final long startMillis = System.currentTimeMillis();
     private boolean startMovingMap = false;
+    private boolean someoneWon = false;
+    private double secondsToDelay = 1;
+    private int numTimesCycled = 0;
+    private int redWins = 0;
+    private int blueWins = 0;
 
     public Game(int tileSize, int mapCode) {
         setFocusable(true);
@@ -101,29 +106,37 @@ public class Game extends JPanel {
             }
         });
 
-        playerOne = new Player(100, 100, tileSize - 1, Color.CYAN);
-        playerTwo = new Player(700, 100, tileSize - 1, Color.RED);
+        playerOne = new Player(100, 500, tileSize - 1, Color.CYAN);
+        playerTwo = new Player(120, 500, tileSize - 1, Color.RED);
         arena = new Arena(mapCode, tileSize);
     }
 
     @Override
     public void paintComponent(Graphics g) {
-
+        if(someoneWon) {
+            repaint();
+            return;
+        }
         super.paintComponent(g);
 
         arena.drawTiles(g, this);
 
-        playerOne.draw(g, getSize(), arena.getMap(), (int) duration);
-        playerTwo.draw(g, getSize(), arena.getMap(), (int) duration);
+        playerOne.draw(g, getSize(), arena.getMap(), (int) duration, this);
+        playerTwo.draw(g, getSize(), arena.getMap(), (int) duration, this);
 
-        if(startMovingMap && seconds > 1) {
+        if(startMovingMap && seconds > secondsToDelay) {
             arena.moveDown();
             playerOne.moveDown();
             playerTwo.moveDown();
             seconds = 0;
-        } else if(!startMovingMap && seconds > 2) {
+            numTimesCycled++;
+        } else if(!startMovingMap && seconds > 5) {
             seconds = 0;
             startMovingMap = true;
+        }
+
+        if(numTimesCycled % 40 == 0 && numTimesCycled > 0) {
+            secondsToDelay *= 0.9;
         }
 
         try {
@@ -154,5 +167,39 @@ public class Game extends JPanel {
 
     public Arena getArena() {
         return arena;
+    }
+
+    public void playerWins(Color color) {
+        someoneWon = true;
+        String message;
+        if (color.equals(Color.RED)) {
+            message = "Blue wins! Click to play again";
+            blueWins++;
+        } else {
+            message = "Red wins! Click to play again";
+            redWins++;
+        }
+
+        JOptionPane.showMessageDialog(null, message);
+
+        SwingUtilities.invokeLater(() -> resetGame());
+    }
+
+    private void resetGame() {
+        duration = 0;
+        prevMillis = System.currentTimeMillis();
+        seconds = 0;
+        startMovingMap = false;
+        secondsToDelay = 1;
+        numTimesCycled = 0;
+
+        playerOne = new Player(100, 500, Tile.tileSize - 1, Color.CYAN);
+        playerTwo = new Player(120, 500, Tile.tileSize - 1, Color.RED);
+
+        arena = new Arena(1, Tile.tileSize);
+
+        someoneWon = false;
+
+        repaint();
     }
 }

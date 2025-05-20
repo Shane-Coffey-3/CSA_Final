@@ -8,7 +8,6 @@ public class Arena {
     public static final Tile[][] emptyMap = createEmptyMap(40, 60);
 
     private Tile[][] map;
-    private int[] spawn;
     private int tileOffset = 0;
 
     public Arena(int mapCode, int tileSize) {
