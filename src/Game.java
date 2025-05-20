@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Game extends JPanel {
-    private long duration, prevMillis = System.currentTimeMillis();
+    private long duration = 0, prevMillis = System.currentTimeMillis();
     private Arena arena;
     private Player playerOne;
     private Player playerTwo;
