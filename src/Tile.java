@@ -57,7 +57,6 @@ public class Tile extends JPanel {
             case BORDER_TILE:
                 if(game.getInEditorMode()) {
                     color = Color.getHSBColor(borderColor, 1, 1);
-                    System.out.println(borderColor);
                     incrementBorderColor();
                 } else {
                     color = Color.BLACK;
@@ -72,11 +71,20 @@ public class Tile extends JPanel {
     }
 
     public boolean isSolid() {
-        return switch (tileType) {
-            case AIR_TILE, WATER_TILE -> false;
-            case GROUND_TILE, JUMP_TILE, BORDER_TILE -> true;
-            default -> false;
-        };
+        switch (tileType) {
+            case AIR_TILE:
+                return false;
+            case WATER_TILE:
+                return false;
+            case GROUND_TILE:
+                return true;
+            case JUMP_TILE:
+                return true;
+            case BORDER_TILE:
+                return true;
+            default: 
+                return false;
+        }
     }
 
     public void setTileType(int newTileType) {
