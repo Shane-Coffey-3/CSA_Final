@@ -13,7 +13,7 @@ public class Game extends JPanel {
     private final long startMillis = System.currentTimeMillis();
     private boolean startMovingMap = false;
     private boolean someoneWon = false;
-    private double secondsToDelay = 1;
+    private double secondsToDelay = 0.8;
     private int numTimesCycled = 0;
     private int redWins = 0;
     private int blueWins = 0;
@@ -136,7 +136,8 @@ public class Game extends JPanel {
         }
 
         if(numTimesCycled % 40 == 0 && numTimesCycled > 0) {
-            secondsToDelay *= 0.9;
+            secondsToDelay *= 0.8;
+            numTimesCycled++;
         }
 
         try {

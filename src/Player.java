@@ -88,6 +88,10 @@ public class Player {
             verticalVelocity = 0;
         }
         y += verticalVelocity * slowedRate * time;
+        if(y < 0) {
+            y = 0;
+            verticalVelocity = 0;
+        }
         if(y + size > screenHeight) {
             y = -1000;
             game.playerWins(color);
